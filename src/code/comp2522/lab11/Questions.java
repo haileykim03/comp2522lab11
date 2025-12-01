@@ -13,14 +13,22 @@ import java.util.Random;
  */
 public class Questions
 {
-    private static final Path           QUIZ_FILE = Paths.get("quiz.txt");
-    private static final Path           DIRS      = Paths.get("src");
-    private static final Path           PATH      = DIRS.resolve(QUIZ_FILE);
+    private static final Path           QUIZ_FILE;
+    private static final Path           DIRS;
+    private static final Path           PATH;
     private static final int            QUESTION  = 0;
     private static final int            ANSWER    = 1;
-    private static final Random         RAND      = new Random();
+    private static final Random         RAND;
     private static final String         REGEX     = "\\|";
     private final        List<Question> questions;
+
+    static
+    {
+        QUIZ_FILE = Paths.get("quiz.txt");
+        DIRS = Paths.get("src");
+        RAND = new Random();
+        PATH = DIRS.resolve(QUIZ_FILE);
+    }
 
     public Questions()
     {

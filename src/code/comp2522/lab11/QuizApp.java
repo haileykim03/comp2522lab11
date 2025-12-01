@@ -1,6 +1,7 @@
 package comp2522.lab11;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -33,21 +34,21 @@ public class QuizApp extends Application
     private static final int RESULT_LAYOUT_SPACING  = 15;
     private static final int DEFAULT_VALUE          = 0;
     private static final int       QUESTION_LIMIT   = 10;
-    private static final Questions QUESTIONS        = new Questions();
+    private static final Questions QUESTIONS;
+
 
     private Stage            primaryStage;
-    private Label            questionLabel;
     private TextField        answerField;
-    private Button           submitButton;
-    private Label            scoreLabel;
-    private ListView<String> missedQuestionsList;
-    private Label            finalScoreLabel;
     private Question         nextQuestion;
 
     private int          score;
     private int          questionsAsked;
     private List<String> missedQuestions;
 
+    static
+    {
+        QUESTIONS = new Questions();
+    }
 
     /**
      *
@@ -110,6 +111,10 @@ public class QuizApp extends Application
     {
         final VBox layout;
         final Scene scene;
+        final Label questionLabel;
+        final Button submitButton;
+        final Label scoreLabel;
+
 
         scoreLabel    = new Label("Score: " + score);
         questionLabel = new Label(nextQuestion.getQuestion());
@@ -120,10 +125,8 @@ public class QuizApp extends Application
 
         submitButton = new Button("Submit");
 
-        submitButton.setOnAction(e -> checkAnswer());
-        answerField.setOnAction(e -> checkAnswer());
-
-
+        submitButton.setOnAction(this::handle);
+        answerField.setOnAction(this::handle);
 
         layout = new VBox(GAME_LAYOUT_SPACING);
 
@@ -177,6 +180,8 @@ public class QuizApp extends Application
         final Button restartButton;
         final VBox layout;
         final Scene scene;
+        final Label finalScoreLabel;
+        final ListView<String> missedQuestionsList;
 
         gameOverLabel   = new Label("Game Over!");
         finalScoreLabel = new Label("Final Score: " + score);
@@ -222,7 +227,7 @@ public class QuizApp extends Application
                 scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
             }
         }
-        catch (final Exception e)
+        catch (final NullPointerException e)
         {
             System.out.println("CSS file not found.");
         }
@@ -236,5 +241,10 @@ public class QuizApp extends Application
     public static void main(final String[] args)
     {
         launch(args);
+    }
+
+    private void handle(ActionEvent e)
+    {
+        checkAnswer();
     }
 }
