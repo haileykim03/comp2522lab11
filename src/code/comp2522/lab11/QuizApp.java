@@ -1,7 +1,6 @@
 package comp2522.lab11;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -79,7 +78,7 @@ public class QuizApp extends Application
         startButton  = new Button("Start Quiz");
         layout       = new VBox(START_LAYOUT_SPACING);
 
-        startButton.setOnAction(e -> startNewGame());
+        startButton.setOnAction(_ -> startNewGame());
 
         scene = new Scene(layout, SCENE_WIDTH, SCENE_HEIGHT);
 
@@ -119,16 +118,14 @@ public class QuizApp extends Application
         scoreLabel    = new Label("Score: " + score);
         questionLabel = new Label(nextQuestion.getQuestion());
         answerField   = new TextField();
+        submitButton = new Button("Submit");
+        layout = new VBox(GAME_LAYOUT_SPACING);
 
         answerField.setPromptText("Type answer...");
         answerField.setMaxWidth(TEXT_FIELD_MAX_WIDTH);
 
-        submitButton = new Button("Submit");
-
-        submitButton.setOnAction(this::handle);
-        answerField.setOnAction(this::handle);
-
-        layout = new VBox(GAME_LAYOUT_SPACING);
+        submitButton.setOnAction(_ -> checkAnswer());
+        answerField.setOnAction(_ -> checkAnswer());
 
         layout.setAlignment(Pos.CENTER);
         layout.getChildren().addAll(questionLabel, answerField, submitButton, scoreLabel);
@@ -143,21 +140,17 @@ public class QuizApp extends Application
 
     private void checkAnswer()
     {
-        // TODO: Replace this with actual logic
         final String input;
         final boolean correct;
 
         input = answerField.getText();
-        System.out.println("This is being called");
         correct = nextQuestion.answerQuestion(input);
         if(correct)
         {
             score++;
-            System.out.println("This is right");
-        }
-        else{
+        } else
+        {
             missedQuestions.add(nextQuestion.toString());
-            System.out.println("This is wrong");
         }
 
         questionsAsked++;
@@ -166,7 +159,8 @@ public class QuizApp extends Application
         if(questionsAsked >= QUESTION_LIMIT)
         {
             showResultScene();
-        } else {
+        } else
+        {
             showGameScene();
         }
 
@@ -187,8 +181,9 @@ public class QuizApp extends Application
         finalScoreLabel = new Label("Final Score: " + score);
         missedTitle     = new Label("Missed Questions:");
         restartButton   = new Button("Play Again");
-
         missedQuestionsList = new ListView<>();
+        layout = new VBox(RESULT_LAYOUT_SPACING);
+
         missedQuestionsList.setMaxHeight(MISSED_LIST_MAX_HEIGHT);
         missedQuestionsList.setMaxWidth(MISSED_LIST_MAX_WIDTH);
 
@@ -197,11 +192,7 @@ public class QuizApp extends Application
             missedQuestionsList.getItems().addAll(missedQuestions);
         }
 
-        restartButton.setOnAction(e -> showStartScene());
-
-
-
-        layout = new VBox(RESULT_LAYOUT_SPACING);
+        restartButton.setOnAction(_ -> showStartScene());
 
         layout.setAlignment(Pos.CENTER);
         layout.getChildren().addAll(gameOverLabel, finalScoreLabel, missedTitle, missedQuestionsList, restartButton);
@@ -243,8 +234,4 @@ public class QuizApp extends Application
         launch(args);
     }
 
-    private void handle(ActionEvent e)
-    {
-        checkAnswer();
-    }
 }
