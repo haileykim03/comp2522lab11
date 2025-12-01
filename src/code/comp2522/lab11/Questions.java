@@ -9,7 +9,11 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Reads from a file of questions, can return those questions as question and answers
+ * Reads from a file of questions, can return those questions as question and answers.
+ *
+ * @author Hailey Kim
+ * @author Luis Seberon
+ * @version 1.0
  */
 public class Questions
 {
@@ -21,7 +25,6 @@ public class Questions
     private static final Random         RAND;
     private static final String         REGEX     = "\\|";
     private final        List<Question> questions;
-
     static
     {
         QUIZ_FILE = Paths.get("quiz.txt");
@@ -30,11 +33,20 @@ public class Questions
         PATH = DIRS.resolve(QUIZ_FILE);
     }
 
+    /**
+     * Constructs a Questions object.
+     */
     public Questions()
     {
         this.questions = readQuestionsFromFile();
     }
 
+
+    /**
+     * Reads lines from the source file and parses them into Question objects.
+     *
+     * @return a List of Question objects parsed from the file
+     */
     private List<Question> readQuestionsFromFile()
     {
         final List<Question>    questions;
@@ -59,6 +71,12 @@ public class Questions
         return questions;
     }
 
+
+    /**
+     * Retrieves a random question from the list.
+     *
+     * @return a randomly selected Question object
+     */
     public Question getRandomQuestion()
     {
         final int  index;
