@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,6 +31,9 @@ public class QuizApp extends Application
     private static final int MISSED_LIST_MAX_HEIGHT = 200;
     private static final int MISSED_LIST_MAX_WIDTH  = 300;
     private static final int RESULT_LAYOUT_SPACING  = 15;
+    private static final int DEFAULT_VALUE          = 0;
+    private static final int       QUESTION_LIMIT   = 10;
+    private static final Questions QUESTIONS        = new Questions();
 
     private Stage            primaryStage;
     private Label            questionLabel;
@@ -41,8 +45,8 @@ public class QuizApp extends Application
     private Question         nextQuestion;
 
     private int          score;
+    private int          questionsAsked;
     private List<String> missedQuestions;
-    private final Questions questions = new Questions();
 
 
     /**
@@ -53,11 +57,8 @@ public class QuizApp extends Application
     public void start(final Stage primaryStage)
     {
         this.primaryStage = primaryStage;
-        nextQuestion = questions.getRandomQuestion();
         primaryStage.setTitle("Quiz App");
-
         showStartScene();
-
         primaryStage.show();
     }
 
@@ -72,6 +73,7 @@ public class QuizApp extends Application
         final VBox layout;
         final Scene scene;
 
+        nextQuestion = QUESTIONS.getRandomQuestion();
         welcomeLabel = new Label("Press 'Start Quiz' to begin!");
         startButton  = new Button("Start Quiz");
         layout       = new VBox(START_LAYOUT_SPACING);
@@ -94,7 +96,9 @@ public class QuizApp extends Application
      */
     private void startNewGame()
     {
-        // TODO: Replace this with actual logic
+        questionsAsked  = DEFAULT_VALUE;
+        score           = DEFAULT_VALUE;
+        missedQuestions = new ArrayList<>();
         showGameScene();
     }
 
@@ -104,7 +108,10 @@ public class QuizApp extends Application
      */
     private void showGameScene()
     {
-        scoreLabel    = new Label("Score: 0");
+        final VBox layout;
+        final Scene scene;
+
+        scoreLabel    = new Label("Score: " + score);
         questionLabel = new Label(nextQuestion.getQuestion());
         answerField   = new TextField();
 
@@ -116,8 +123,7 @@ public class QuizApp extends Application
         submitButton.setOnAction(e -> checkAnswer());
         answerField.setOnAction(e -> checkAnswer());
 
-        final VBox layout;
-        final Scene scene;
+
 
         layout = new VBox(GAME_LAYOUT_SPACING);
 
@@ -135,7 +141,32 @@ public class QuizApp extends Application
     private void checkAnswer()
     {
         // TODO: Replace this with actual logic
-//        showResultScene();
+        final String input;
+        final boolean correct;
+
+        input = answerField.getText();
+        System.out.println("This is being called");
+        correct = nextQuestion.answerQuestion(input);
+        if(correct)
+        {
+            score++;
+            System.out.println("This is right");
+        }
+        else{
+            missedQuestions.add(nextQuestion.toString());
+            System.out.println("This is wrong");
+        }
+
+        questionsAsked++;
+        nextQuestion =  QUESTIONS.getRandomQuestion();
+
+        if(questionsAsked >= QUESTION_LIMIT)
+        {
+            showResultScene();
+        } else {
+            showGameScene();
+        }
+
     }
 
 
@@ -144,6 +175,8 @@ public class QuizApp extends Application
         final Label gameOverLabel;
         final Label missedTitle;
         final Button restartButton;
+        final VBox layout;
+        final Scene scene;
 
         gameOverLabel   = new Label("Game Over!");
         finalScoreLabel = new Label("Final Score: " + score);
@@ -154,8 +187,6 @@ public class QuizApp extends Application
         missedQuestionsList.setMaxHeight(MISSED_LIST_MAX_HEIGHT);
         missedQuestionsList.setMaxWidth(MISSED_LIST_MAX_WIDTH);
 
-
-        // TODO: Replace this with actual logic
         if (missedQuestions != null)
         {
             missedQuestionsList.getItems().addAll(missedQuestions);
@@ -163,8 +194,7 @@ public class QuizApp extends Application
 
         restartButton.setOnAction(e -> showStartScene());
 
-        final VBox layout;
-        final Scene scene;
+
 
         layout = new VBox(RESULT_LAYOUT_SPACING);
 

@@ -42,7 +42,7 @@ public class Question
     @Override
     public String toString()
     {
-        return getQuestion() + getAnswer();
+        return getQuestion() + " " + getAnswer();
     }
 
 }
