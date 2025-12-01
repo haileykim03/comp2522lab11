@@ -22,26 +22,27 @@ import java.util.List;
  */
 public class QuizApp extends Application
 {
-    private static final int SCENE_WIDTH = 400;
-    private static final int SCENE_HEIGHT = 500;
-    private static final int START_LAYOUT_SPACING = 20;
-    private static final int TEXT_FIELD_MAX_WIDTH = 250;
-    private static final int GAME_LAYOUT_SPACING = 15;
+    private static final int SCENE_WIDTH            = 400;
+    private static final int SCENE_HEIGHT           = 500;
+    private static final int START_LAYOUT_SPACING   = 20;
+    private static final int TEXT_FIELD_MAX_WIDTH   = 250;
+    private static final int GAME_LAYOUT_SPACING    = 15;
     private static final int MISSED_LIST_MAX_HEIGHT = 200;
-    private static final int MISSED_LIST_MAX_WIDTH = 300;
-    private static final int RESULT_LAYOUT_SPACING = 15;
+    private static final int MISSED_LIST_MAX_WIDTH  = 300;
+    private static final int RESULT_LAYOUT_SPACING  = 15;
 
-    private Stage primaryStage;
-    private Label questionLabel;
-    private TextField answerField;
-    private Button submitButton;
-    private Label scoreLabel;
+    private Stage            primaryStage;
+    private Label            questionLabel;
+    private TextField        answerField;
+    private Button           submitButton;
+    private Label            scoreLabel;
     private ListView<String> missedQuestionsList;
-    private Label finalScoreLabel;
+    private Label            finalScoreLabel;
+    private Question         nextQuestion;
 
-    private int score;
+    private int          score;
     private List<String> missedQuestions;
-
+    private final Questions questions = new Questions();
 
 
     /**
@@ -52,7 +53,7 @@ public class QuizApp extends Application
     public void start(final Stage primaryStage)
     {
         this.primaryStage = primaryStage;
-
+        nextQuestion = questions.getRandomQuestion();
         primaryStage.setTitle("Quiz App");
 
         showStartScene();
@@ -88,11 +89,11 @@ public class QuizApp extends Application
     }
 
 
-
     /**
      *
      */
-    private void startNewGame() {
+    private void startNewGame()
+    {
         // TODO: Replace this with actual logic
         showGameScene();
     }
@@ -103,9 +104,9 @@ public class QuizApp extends Application
      */
     private void showGameScene()
     {
-        scoreLabel = new Label("Score: 0");
-        questionLabel = new Label("Question goes here");
-        answerField = new TextField();
+        scoreLabel    = new Label("Score: 0");
+        questionLabel = new Label(nextQuestion.getQuestion());
+        answerField   = new TextField();
 
         answerField.setPromptText("Type answer...");
         answerField.setMaxWidth(TEXT_FIELD_MAX_WIDTH);
@@ -131,12 +132,11 @@ public class QuizApp extends Application
     }
 
 
-
-    private void checkAnswer() {
+    private void checkAnswer()
+    {
         // TODO: Replace this with actual logic
-        showResultScene();
+//        showResultScene();
     }
-
 
 
     private void showResultScene()
@@ -145,10 +145,10 @@ public class QuizApp extends Application
         final Label missedTitle;
         final Button restartButton;
 
-        gameOverLabel = new Label("Game Over!");
+        gameOverLabel   = new Label("Game Over!");
         finalScoreLabel = new Label("Final Score: " + score);
-        missedTitle = new Label("Missed Questions:");
-        restartButton = new Button("Play Again");
+        missedTitle     = new Label("Missed Questions:");
+        restartButton   = new Button("Play Again");
 
         missedQuestionsList = new ListView<>();
         missedQuestionsList.setMaxHeight(MISSED_LIST_MAX_HEIGHT);
@@ -179,7 +179,6 @@ public class QuizApp extends Application
     }
 
 
-
     /**
      *
      * @param scene
@@ -198,7 +197,6 @@ public class QuizApp extends Application
             System.out.println("CSS file not found.");
         }
     }
-
 
 
     /**
