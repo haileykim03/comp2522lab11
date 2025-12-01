@@ -22,9 +22,9 @@ public class Questions
     private static final Path           PATH      = DIRS.resolve(QUIZ_FILE);
     private static final int            QUESTION  = 0;
     private static final int            ANSWER    = 1;
-    private static final Random         rand      = new Random();
-
-    private final List<Question>        questions;
+    private static final Random         RAND      = new Random();
+    private static final String         REGEX     = "\\|";
+    private final        List<Question> questions;
 
 
     /**
@@ -45,23 +45,19 @@ public class Questions
     {
         final List<Question>    questions;
         final List<String>      lines;
-
         questions = new ArrayList<>();
-
-        try
-        {
+        try{
             lines =  Files.readAllLines(PATH);
-            for (final String line : lines)
+            for(String line : lines)
             {
                 final String[] splitLine;
                 final Question question;
 
-                splitLine = line.split("\\|");
+                splitLine = line.split(REGEX);
                 question = new Question(splitLine[QUESTION], splitLine[ANSWER]);
                 questions.add(question);
             }
-        }
-        catch (final IOException e)
+        } catch (final IOException e)
         {
             e.printStackTrace();
         }
@@ -78,7 +74,7 @@ public class Questions
     public Question getRandomQuestion()
     {
         final int  index;
-        index = rand.nextInt(questions.size());
+        index = RAND.nextInt(questions.size());
         return questions.get(index);
     }
 }
