@@ -15,7 +15,7 @@ import java.util.List;
 
 
 /**
- *
+ * The main application class for the Quiz Game.
  *
  * @author Hailey Kim
  * @author Luis Saberon
@@ -50,8 +50,9 @@ public class QuizApp extends Application
     }
 
     /**
+     * Sets up the primary stage and displays the initial start scene.
      *
-     * @param primaryStage
+     * @param primaryStage the primary stage for this application
      */
     @Override
     public void start(final Stage primaryStage)
@@ -64,7 +65,7 @@ public class QuizApp extends Application
 
 
     /**
-     *
+     * Displays the start scene.
      */
     private void showStartScene()
     {
@@ -92,7 +93,7 @@ public class QuizApp extends Application
 
 
     /**
-     *
+     * Initializes a new game session.
      */
     private void startNewGame()
     {
@@ -104,7 +105,8 @@ public class QuizApp extends Application
 
 
     /**
-     *
+     * Displays the main game scene.
+     * Shows the current question, an input field for the answer, and the current score.
      */
     private void showGameScene()
     {
@@ -138,6 +140,11 @@ public class QuizApp extends Application
     }
 
 
+    /**
+     * Validates the user's answer and updates the game state.
+     * Checks if the input matches the answer, updates the score, and adds wrong answers
+     * to the missed list. Proceeds to the next question or the result scene if the limit is reached.
+     */
     private void checkAnswer()
     {
         final String input;
@@ -167,6 +174,10 @@ public class QuizApp extends Application
     }
 
 
+    /**
+     * Displays the result scene.
+     * Shows the final score, a list of missed questions, and a button to restart the game.
+     */
     private void showResultScene()
     {
         final Label gameOverLabel;
@@ -206,8 +217,9 @@ public class QuizApp extends Application
 
 
     /**
+     * Loads the CSS stylesheet for the given scene.
      *
-     * @param scene
+     * @param scene the scene to apply the stylesheet to
      */
     private void loadStyle(final Scene scene)
     {
@@ -226,8 +238,9 @@ public class QuizApp extends Application
 
 
     /**
+     * The main entry point for the application.
      *
-     * @param args
+     * @param args command line arguments
      */
     public static void main(final String[] args)
     {
